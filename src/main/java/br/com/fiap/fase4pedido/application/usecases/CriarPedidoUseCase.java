@@ -1,18 +1,17 @@
 package br.com.fiap.fase4pedido.application.usecases;
 
-import br.com.fiap.fase4pedido.domain.entities.ItemPedidoEntity;
 import br.com.fiap.fase4pedido.domain.entities.PedidoEntity;
 import br.com.fiap.fase4pedido.domain.entities.StatusPedido;
 import br.com.fiap.fase4pedido.domain.repositories.PedidoRepository;
-import br.com.fiap.fase4pedido.interfaceadapters.dtos.ItemPedidoRecordDTO;
 import br.com.fiap.fase4pedido.interfaceadapters.dtos.PedidoRecordDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.integration.support.MessageBuilder;
+import org.springframework.messaging.MessageChannel;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
+
 @Service
 public class CriarPedidoUseCase {
 
@@ -52,4 +51,6 @@ public class CriarPedidoUseCase {
         // 4. Salvar o pedido
         return pedidoRepository.save(pedido);
     }
+
     }
+
