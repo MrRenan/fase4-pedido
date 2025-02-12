@@ -4,16 +4,16 @@ import java.util.UUID;
 
 public class EmailDto {
 
-    private UUID pedidoId;
+    private Long pedidoId;
     private String emailTo;
     private String subject;
     private String text;
 
-    public UUID getPedidoId() {
+    public Long getPedidoId() {
         return pedidoId;
     }
 
-    public void setPedidoId(UUID pedidoId) {
+    public void setPedidoId(Long pedidoId) {
         this.pedidoId = pedidoId;
     }
 
