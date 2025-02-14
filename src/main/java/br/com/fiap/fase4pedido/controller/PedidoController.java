@@ -1,6 +1,6 @@
 package br.com.fiap.fase4pedido.controller;
-
 import br.com.fiap.fase4pedido.dto.PedidoDto;
+import br.com.fiap.fase4pedido.dto.StatusDto;
 import br.com.fiap.fase4pedido.service.PedidoService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -9,31 +9,32 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+
 import java.net.URI;
 import java.util.List;
+
 @RestController
 @RequestMapping("/pedidos")
-
 public class PedidoController {
 
     @Autowired
-    private PedidoService pedidoService;
+    private PedidoService service;
 
     @GetMapping()
     public List<PedidoDto> listarTodos() {
-        return pedidoService.obterTodos();
+        return service.obterTodos();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PedidoDto> listarPorId(@PathVariable @NotNull Long id) {
-        PedidoDto dto = pedidoService.obterPorId(id);
+        PedidoDto dto = service.obterPorId(id);
 
         return  ResponseEntity.ok(dto);
     }
 
     @PostMapping()
     public ResponseEntity<PedidoDto> realizaPedido(@RequestBody @Valid PedidoDto dto, UriComponentsBuilder uriBuilder) {
-        PedidoDto pedidoRealizado = pedidoService.criarPedido(dto);
+        PedidoDto pedidoRealizado = service.criarPedido(dto);
 
         URI endereco = uriBuilder.path("/pedidos/{id}").buildAndExpand(pedidoRealizado.getId()).toUri();
 
@@ -41,15 +42,19 @@ public class PedidoController {
 
     }
 
+    @PutMapping("/{id}/status")
+    public ResponseEntity<PedidoDto> atualizaStatus(@PathVariable Long id, @RequestBody StatusDto status){
+        PedidoDto dto = service.atualizaStatus(id, status);
 
+        return ResponseEntity.ok(dto);
+    }
 
 
     @PutMapping("/{id}/pago")
     public ResponseEntity<Void> aprovaPagamento(@PathVariable @NotNull Long id) {
-        pedidoService.aprovaPagamentoPedido(id);
+        service.aprovaPagamentoPedido(id);
 
         return ResponseEntity.ok().build();
 
     }
-
 }

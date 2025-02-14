@@ -1,21 +1,21 @@
 package br.com.fiap.fase4pedido.service;
 
+
+
 import br.com.fiap.fase4pedido.dto.PedidoDto;
 import br.com.fiap.fase4pedido.dto.StatusDto;
 import br.com.fiap.fase4pedido.model.Pedido;
 import br.com.fiap.fase4pedido.model.Status;
 import br.com.fiap.fase4pedido.repository.PedidoRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
-
 
 @Service
 @RequiredArgsConstructor
@@ -60,7 +60,7 @@ public class PedidoService {
             throw new EntityNotFoundException();
         }
 
-
+        pedido.setStatus(dto.getStatus());
         repository.atualizaStatus(dto.getStatus(), pedido);
         return modelMapper.map(pedido, PedidoDto.class);
     }
@@ -74,6 +74,6 @@ public class PedidoService {
         }
 
         pedido.setStatus(Status.PAGO);
-
+        repository.atualizaStatus(Status.PAGO, pedido);
     }
 }

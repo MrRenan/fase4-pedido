@@ -1,6 +1,7 @@
 package br.com.fiap.fase4pedido.dto;
 
-import ch.qos.logback.core.status.Status;
+
+import br.com.fiap.fase4pedido.model.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

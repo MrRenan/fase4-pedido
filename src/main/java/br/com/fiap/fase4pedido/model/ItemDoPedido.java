@@ -1,12 +1,15 @@
 package br.com.fiap.fase4pedido.model;
 
+
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.checkerframework.checker.index.qual.Positive;
+
 
 @Entity
 @Table(name = "item_do_pedido")
@@ -27,4 +30,5 @@ public class ItemDoPedido {
 
     @ManyToOne(optional=false)
     private Pedido pedido;
+
 }
