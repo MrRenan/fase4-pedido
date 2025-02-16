@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 
-@EnableEurekaClient
+//@EnableEurekaClient
 public class Fase4PedidoApplication {
 
     public static void main(String[] args) {

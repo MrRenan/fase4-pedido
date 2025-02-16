@@ -7,12 +7,13 @@ import br.com.fiap.fase4pedido.dto.StatusDto;
 import br.com.fiap.fase4pedido.model.Pedido;
 import br.com.fiap.fase4pedido.model.Status;
 import br.com.fiap.fase4pedido.repository.PedidoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
