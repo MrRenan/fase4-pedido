@@ -25,4 +25,13 @@ public interface PedidoApi {
     @ResponseStatus(OK)
     List<PedidoResponse> obterPedidos();
 
+    @Operation(summary = "Pagar pedido.")
+    @PutMapping("/{id}/pagar")
+    @ResponseStatus(OK)
+    PedidoResponse pagarPedido(@PathVariable String id);
+
+    @Operation(summary = "Cancelar pedido.")
+    @PutMapping("/{id}/cancelar")
+    @ResponseStatus(OK)
+    PedidoResponse cancelarPedido(@PathVariable String id);
 }

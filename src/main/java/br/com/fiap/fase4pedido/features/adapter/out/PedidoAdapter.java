@@ -11,28 +11,40 @@ import br.com.fiap.fase4pedido.infra.restclient.cliente.ClienteClient;
 import br.com.fiap.fase4pedido.infra.restclient.cliente.entity.ClienteEntity;
 import br.com.fiap.fase4pedido.infra.restclient.produto.ProdutoClient;
 import br.com.fiap.fase4pedido.infra.restclient.produto.entity.ProdutoEntity;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import static br.com.fiap.fase4pedido.features.domain.entity.Status.CRIADO;
 import static java.time.LocalDate.now;
 
 @Component
-@RequiredArgsConstructor
 public class PedidoAdapter implements PedidoPort {
 
     private final ClienteClient clienteClient;
     private final ProdutoClient produtoClient;
-    private final PedidoRepository produtoRepository;
+    private final PedidoRepository pedidoRepository;
     private final PedidoMapper mapper;
+
+    @Autowired
+    public PedidoAdapter(
+            ClienteClient clienteClient,
+            ProdutoClient produtoClient,
+            PedidoRepository pedidoRepository,
+            @Qualifier("pedidoOutputMapper") PedidoMapper mapper // Usando @Qualifier no construtor
+    ) {
+        this.clienteClient = clienteClient;
+        this.produtoClient = produtoClient;
+        this.pedidoRepository = pedidoRepository;
+        this.mapper = mapper;
+    }
 
     @Override
     public Pedido criarPedido(Pedido pedido) {
-        Pedido novoPedido = new Pedido();
-
         ClienteEntity clienteEntity = obterCliente(pedido.getCliente().getId());
         Cliente cliente = mapper.paraCliente(clienteEntity);
         List<Produto> produtoList = pedido.getProdutos()
@@ -40,19 +52,30 @@ public class PedidoAdapter implements PedidoPort {
                 .map(this::obterProduto)
                 .map(mapper::paraProduto).toList();
 
-        novoPedido.setCliente(cliente);
-        novoPedido.setStatus(CRIADO);
-        novoPedido.setProdutos(produtoList);
-        novoPedido.setDataCriacao(now());
-        novoPedido.setTotal(calcularTotal(produtoList));
-        PedidoDocument pedidoDocument = produtoRepository.save(mapper.paraPedidoDocument(novoPedido));
+        Pedido novoPedido = new Pedido(cliente, produtoList, now(), CRIADO, calcularTotal(produtoList));
+
+        PedidoDocument pedidoDocument = pedidoRepository.save(mapper.paraPedidoDocument(novoPedido));
         return mapper.paraPedido(pedidoDocument);
     }
 
     @Override
     public List<Pedido> obterPedidos() {
-        List<PedidoDocument> pedidoDocumentList = produtoRepository.findAll();
+        List<PedidoDocument> pedidoDocumentList = pedidoRepository.findAll();
         return pedidoDocumentList.stream().map(mapper::paraPedido).toList();
+    }
+
+    @Override
+    public Pedido obterPedidoPorId(String id) {
+        Optional<PedidoDocument> pedidoDocument = pedidoRepository.findById(id);
+        return pedidoDocument.map(mapper::paraPedido)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado com o ID: " + id));
+    }
+
+    @Override
+    public Pedido atualizarPedido(Pedido pedido) {
+        PedidoDocument pedidoDocument = mapper.paraPedidoDocument(pedido);
+        pedidoDocument = pedidoRepository.save(pedidoDocument);
+        return mapper.paraPedido(pedidoDocument);
     }
 
     private BigDecimal calcularTotal(List<Produto> produtoList) {
@@ -78,9 +101,8 @@ public class PedidoAdapter implements PedidoPort {
             ProdutoEntity produtoEntity = produtoClient.obterProduto(produto.getId());
             produtoEntity.setQuantidade(produto.getQuantidade());
             return produtoEntity;
-        }catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             throw new RuntimeException("Erro ao obter produto", e);
         }
     }
-
 }

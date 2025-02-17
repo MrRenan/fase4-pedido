@@ -9,4 +9,8 @@ public interface PedidoPort {
     Pedido criarPedido(Pedido pedido);
 
     List<Pedido> obterPedidos();
+
+    Pedido obterPedidoPorId(String id); // Adicionado
+
+    Pedido atualizarPedido(Pedido pedido); // Adicionado
 }
