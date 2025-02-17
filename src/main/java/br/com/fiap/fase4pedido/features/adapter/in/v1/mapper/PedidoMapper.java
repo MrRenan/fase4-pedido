@@ -5,6 +5,7 @@ import br.com.fiap.fase4pedido.infra.restapi.v1.model.PedidoRequest;
 import br.com.fiap.fase4pedido.infra.restapi.v1.model.PedidoResponse;
 import org.mapstruct.AnnotateWith;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
 
 @Mapper(componentModel = "spring")
@@ -15,5 +16,6 @@ import org.springframework.stereotype.Component;
 public interface PedidoMapper {
     PedidoResponse paraPedidoResponse(Pedido pedido);
 
+    @Mapping(source = "clienteId", target = "cliente.id")
     Pedido paraPedido(PedidoRequest pedidoRequest);
 }

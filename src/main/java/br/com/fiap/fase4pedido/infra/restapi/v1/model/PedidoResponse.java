@@ -1,6 +1,5 @@
 package br.com.fiap.fase4pedido.infra.restapi.v1.model;
 
-import br.com.fiap.fase4pedido.features.domain.entity.Produto;
 import lombok.Builder;
 
 import java.math.BigDecimal;
@@ -24,6 +23,7 @@ public record PedidoResponse(
     }
 
     public record Produto (
+            String id,
             String nomeProduto,
             BigDecimal preco,
             int quantidade

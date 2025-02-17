@@ -71,6 +71,11 @@
             <version>1.6.0.Beta2</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>4.2.0</version>
+        </dependency>
     </dependencies>
 
     <build>

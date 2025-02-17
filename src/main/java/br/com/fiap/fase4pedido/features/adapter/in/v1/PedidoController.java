@@ -9,6 +9,9 @@ import br.com.fiap.fase4pedido.infra.restapi.v1.model.PedidoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequiredArgsConstructor
 public class PedidoController implements PedidoApi {
@@ -20,5 +23,11 @@ public class PedidoController implements PedidoApi {
     public PedidoResponse criarPedido(PedidoRequest pedidoRequest) {
         Pedido pedido = useCase.criarPedido(mapper.paraPedido(pedidoRequest));
         return mapper.paraPedidoResponse(pedido);
+    }
+
+    @Override
+    public List<PedidoResponse> obterPedidos() {
+        List<Pedido> pedidos = useCase.obterPedidos();
+        return pedidos.stream().map(mapper::paraPedidoResponse).collect(Collectors.toList());
     }
 }

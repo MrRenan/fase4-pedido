@@ -11,7 +11,7 @@ public record PedidoRequest(
 ) {
     public record ProdutoRequest (
             String id,
-            String quantidade
+            int quantidade
     ){
 
     }
