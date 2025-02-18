@@ -48,8 +48,7 @@ public class PedidoControllerTest {
         // Arrange
         PedidoRequest pedidoRequest = new PedidoRequest(
                 "1",
-                Collections.singletonList(new PedidoRequest.ProdutoRequest("1", "Produto A", BigDecimal.valueOf(100), 2)),
-                "CRIADO"
+                Collections.singletonList(new PedidoRequest.ProdutoRequest("1", 2))
         );
 
         Pedido pedido = new Pedido(

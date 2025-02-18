@@ -1,6 +1,5 @@
 package br.com.fiap.fase4pedido.features.domain.service;
 
-import br.com.fiap.fase4pedido.features.PedidoService;
 import br.com.fiap.fase4pedido.features.adapter.out.PedidoAdapter;
 import br.com.fiap.fase4pedido.features.domain.entity.Cliente;
 import br.com.fiap.fase4pedido.features.domain.entity.Pedido;

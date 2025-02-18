@@ -6,8 +6,7 @@ import br.com.fiap.fase4pedido.features.domain.entity.Pedido;
 import br.com.fiap.fase4pedido.infra.restapi.v1.PedidoApi;
 import br.com.fiap.fase4pedido.infra.restapi.v1.model.PedidoRequest;
 import br.com.fiap.fase4pedido.infra.restapi.v1.model.PedidoResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,16 +14,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/pedido")
+@RequiredArgsConstructor
 public class PedidoController implements PedidoApi {
 
     private final PedidoMapper mapper;
     private final PedidoUseCase useCase;
-
-    @Autowired
-    public PedidoController(@Qualifier("pedidoInputMapper") PedidoMapper mapper, PedidoUseCase useCase) {
-        this.mapper = mapper;
-        this.useCase = useCase;
-    }
 
     @Override
     @PostMapping

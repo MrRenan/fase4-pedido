@@ -6,7 +6,6 @@ import br.com.fiap.fase4pedido.features.domain.entity.Pedido;
 import br.com.fiap.fase4pedido.features.domain.entity.Produto;
 import br.com.fiap.fase4pedido.features.domain.entity.Status;
 import br.com.fiap.fase4pedido.infra.mongodb.document.PedidoDocument;
-import br.com.fiap.fase4pedido.infra.mongodb.document.ProdutoDocument;
 import br.com.fiap.fase4pedido.infra.mongodb.repository.PedidoRepository;
 import br.com.fiap.fase4pedido.infra.restclient.cliente.ClienteClient;
 import br.com.fiap.fase4pedido.infra.restclient.cliente.entity.ClienteEntity;
@@ -60,7 +59,7 @@ public class PedidoAdapterTest {
 
         PedidoDocument pedidoDocument = new PedidoDocument(
                 new PedidoDocument.ClienteDocument("1", "João"),
-                Collections.singletonList(new ProdutoDocument("1", "Produto A", BigDecimal.valueOf(100), 2)),
+                Collections.singletonList(new PedidoDocument.ProdutoDocument("1", "Produto A", BigDecimal.valueOf(100), 2)),
                 LocalDate.now(),
                 "CRIADO",
                 BigDecimal.valueOf(200)

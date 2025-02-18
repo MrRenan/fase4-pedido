@@ -11,8 +11,7 @@ import br.com.fiap.fase4pedido.infra.restclient.cliente.ClienteClient;
 import br.com.fiap.fase4pedido.infra.restclient.cliente.entity.ClienteEntity;
 import br.com.fiap.fase4pedido.infra.restclient.produto.ProdutoClient;
 import br.com.fiap.fase4pedido.infra.restclient.produto.entity.ProdutoEntity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -23,25 +22,13 @@ import static br.com.fiap.fase4pedido.features.domain.entity.Status.CRIADO;
 import static java.time.LocalDate.now;
 
 @Component
+@RequiredArgsConstructor
 public class PedidoAdapter implements PedidoPort {
 
     private final ClienteClient clienteClient;
     private final ProdutoClient produtoClient;
     private final PedidoRepository pedidoRepository;
     private final PedidoMapper mapper;
-
-    @Autowired
-    public PedidoAdapter(
-            ClienteClient clienteClient,
-            ProdutoClient produtoClient,
-            PedidoRepository pedidoRepository,
-            @Qualifier("pedidoOutputMapper") PedidoMapper mapper // Usando @Qualifier no construtor
-    ) {
-        this.clienteClient = clienteClient;
-        this.produtoClient = produtoClient;
-        this.pedidoRepository = pedidoRepository;
-        this.mapper = mapper;
-    }
 
     @Override
     public Pedido criarPedido(Pedido pedido) {
