@@ -34,4 +34,9 @@ public interface PedidoApi {
     @PutMapping("/{id}/cancelar")
     @ResponseStatus(OK)
     PedidoResponse cancelarPedido(@PathVariable String id);
+
+    @Operation(summary = "Obter pedido por ID.")
+    @GetMapping("/{id}")
+    @ResponseStatus(OK)
+    PedidoResponse obterPedidoPorId(@PathVariable("id") String id);
 }

@@ -35,6 +35,7 @@ public class PedidoServiceTest {
     public void testCriarPedido() {
         // Arrange
         Pedido pedido = new Pedido(
+                "1",
                 new Cliente("1", "João"),
                 Collections.singletonList(new Produto("1", "Produto A", BigDecimal.valueOf(100), 2)),
                 LocalDate.now(),
@@ -57,6 +58,7 @@ public class PedidoServiceTest {
     public void testPagarPedido() {
         // Arrange
         Pedido pedido = new Pedido(
+                "1",
                 new Cliente("1", "João"),
                 Collections.singletonList(new Produto("1", "Produto A", BigDecimal.valueOf(100), 2)),
                 LocalDate.now(),

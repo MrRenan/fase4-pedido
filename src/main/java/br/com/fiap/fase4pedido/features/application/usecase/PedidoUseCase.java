@@ -28,4 +28,8 @@ public class PedidoUseCase {
     public Pedido cancelarPedido(String id) {
         return service.cancelarPedido(id);
     }
+
+    public Pedido obterPedidoPorId(String id) {
+        return service.obterPedidoPorId(id);
+    }
 }

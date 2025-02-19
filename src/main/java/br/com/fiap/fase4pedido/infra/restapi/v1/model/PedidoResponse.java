@@ -9,6 +9,7 @@ import java.util.List;
 @Builder
 public record PedidoResponse(
 
+        String id,
         Cliente cliente,
         List<Produto> produtos,
         LocalDate dataCriacao,

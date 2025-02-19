@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Pedido {
 
+    private String id;
     private Cliente cliente;
     private List<Produto> produtos;
     private LocalDate dataCriacao;

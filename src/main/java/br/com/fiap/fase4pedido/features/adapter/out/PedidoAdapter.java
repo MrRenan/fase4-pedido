@@ -4,6 +4,9 @@ import br.com.fiap.fase4pedido.features.adapter.out.mapper.PedidoMapper;
 import br.com.fiap.fase4pedido.features.domain.entity.Cliente;
 import br.com.fiap.fase4pedido.features.domain.entity.Pedido;
 import br.com.fiap.fase4pedido.features.domain.entity.Produto;
+import br.com.fiap.fase4pedido.features.domain.exception.exception.ClienteNaoEncontradoException;
+import br.com.fiap.fase4pedido.features.domain.exception.exception.PedidoNaoEncontradoException;
+import br.com.fiap.fase4pedido.features.domain.exception.exception.ProdutoNaoEncontradoException;
 import br.com.fiap.fase4pedido.features.port.PedidoPort;
 import br.com.fiap.fase4pedido.infra.mongodb.document.PedidoDocument;
 import br.com.fiap.fase4pedido.infra.mongodb.repository.PedidoRepository;
@@ -39,7 +42,7 @@ public class PedidoAdapter implements PedidoPort {
                 .map(this::obterProduto)
                 .map(mapper::paraProduto).toList();
 
-        Pedido novoPedido = new Pedido(cliente, produtoList, now(), CRIADO, calcularTotal(produtoList));
+        Pedido novoPedido = new Pedido("123", cliente, produtoList, now(), CRIADO, calcularTotal(produtoList));
 
         PedidoDocument pedidoDocument = pedidoRepository.save(mapper.paraPedidoDocument(novoPedido));
         return mapper.paraPedido(pedidoDocument);
@@ -55,7 +58,7 @@ public class PedidoAdapter implements PedidoPort {
     public Pedido obterPedidoPorId(String id) {
         Optional<PedidoDocument> pedidoDocument = pedidoRepository.findById(id);
         return pedidoDocument.map(mapper::paraPedido)
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado com o ID: " + id));
+                .orElseThrow(() -> new PedidoNaoEncontradoException("Pedido não encontrado com o ID: " + id));
     }
 
     @Override
@@ -79,7 +82,7 @@ public class PedidoAdapter implements PedidoPort {
         try {
             return clienteClient.obterCliente(id);
         } catch (RuntimeException e) {
-            throw new RuntimeException("Erro ao obter cliente", e);
+            throw new ClienteNaoEncontradoException("Erro ao obter cliente: " + id);
         }
     }
 
@@ -89,7 +92,7 @@ public class PedidoAdapter implements PedidoPort {
             produtoEntity.setQuantidade(produto.getQuantidade());
             return produtoEntity;
         } catch (RuntimeException e) {
-            throw new RuntimeException("Erro ao obter produto", e);
+            throw new ProdutoNaoEncontradoException("Erro ao obter produto: " + produto.getId());
         }
     }
 }

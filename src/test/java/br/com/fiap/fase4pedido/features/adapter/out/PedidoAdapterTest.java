@@ -50,6 +50,7 @@ public class PedidoAdapterTest {
     public void testCriarPedido() {
         // Arrange
         Pedido pedido = new Pedido(
+                "1",
                 new Cliente("1", "João"),
                 Collections.singletonList(new Produto("1", "Produto A", BigDecimal.valueOf(100), 2)),
                 LocalDate.now(),
@@ -58,6 +59,7 @@ public class PedidoAdapterTest {
         );
 
         PedidoDocument pedidoDocument = new PedidoDocument(
+                "1",
                 new PedidoDocument.ClienteDocument("1", "João"),
                 Collections.singletonList(new PedidoDocument.ProdutoDocument("1", "Produto A", BigDecimal.valueOf(100), 2)),
                 LocalDate.now(),

@@ -47,4 +47,10 @@ public class PedidoController implements PedidoApi {
         Pedido pedido = useCase.cancelarPedido(id);
         return mapper.paraPedidoResponse(pedido);
     }
+
+    @Override
+    public PedidoResponse obterPedidoPorId(String id) {
+        Pedido pedido = useCase.obterPedidoPorId(id);
+        return mapper.paraPedidoResponse(pedido);
+    }
 }

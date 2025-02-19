@@ -11,6 +11,7 @@ import java.util.List;
 @Document(collection = "pedido")
 public record PedidoDocument (
 
+        String id,
     ClienteDocument cliente,
     List<ProdutoDocument> produtos,
     LocalDate dataCriacao,
