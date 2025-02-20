@@ -5,6 +5,7 @@ import br.com.fiap.fase4pedido.features.domain.entity.Cliente;
 import br.com.fiap.fase4pedido.features.domain.entity.Pedido;
 import br.com.fiap.fase4pedido.features.domain.entity.Produto;
 import br.com.fiap.fase4pedido.features.domain.exception.exception.ClienteNaoEncontradoException;
+import br.com.fiap.fase4pedido.features.domain.exception.exception.EstoqueInsuficienteException;
 import br.com.fiap.fase4pedido.features.domain.exception.exception.PedidoNaoEncontradoException;
 import br.com.fiap.fase4pedido.features.domain.exception.exception.ProdutoNaoEncontradoException;
 import br.com.fiap.fase4pedido.features.port.PedidoPort;
@@ -13,7 +14,9 @@ import br.com.fiap.fase4pedido.infra.mongodb.repository.PedidoRepository;
 import br.com.fiap.fase4pedido.infra.restclient.cliente.ClienteClient;
 import br.com.fiap.fase4pedido.infra.restclient.cliente.entity.ClienteEntity;
 import br.com.fiap.fase4pedido.infra.restclient.produto.ProdutoClient;
+import br.com.fiap.fase4pedido.infra.restclient.produto.entity.EstoqueEntity;
 import br.com.fiap.fase4pedido.infra.restclient.produto.entity.ProdutoEntity;
+import br.com.fiap.fase4pedido.infra.restclient.produto.entity.ProdutoEstoque;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -43,6 +46,18 @@ public class PedidoAdapter implements PedidoPort {
                 .map(mapper::paraProduto).toList();
 
         Pedido novoPedido = new Pedido("123", cliente, produtoList, now(), CRIADO, calcularTotal(produtoList));
+
+        List<ProdutoEstoque> produtoEstoqueList = produtoList.stream()
+                .map(produto -> new ProdutoEstoque(produto.getId(), produto.getQuantidade()))
+                .toList();
+
+        EstoqueEntity estoqueEntity = new EstoqueEntity(produtoEstoqueList);
+
+        try {
+            produtoClient.atualizarEstoque(estoqueEntity);
+        } catch (RuntimeException e) {
+            throw new EstoqueInsuficienteException("Erro ao atualizar estoque.");
+        }
 
         PedidoDocument pedidoDocument = pedidoRepository.save(mapper.paraPedidoDocument(novoPedido));
         return mapper.paraPedido(pedidoDocument);

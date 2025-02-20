@@ -3,6 +3,7 @@ package br.com.fiap.fase4pedido.config.exception;
 
 
 import br.com.fiap.fase4pedido.features.domain.exception.exception.ClienteNaoEncontradoException;
+import br.com.fiap.fase4pedido.features.domain.exception.exception.EstoqueInsuficienteException;
 import br.com.fiap.fase4pedido.features.domain.exception.exception.PedidoNaoEncontradoException;
 import br.com.fiap.fase4pedido.features.domain.exception.exception.ProdutoNaoEncontradoException;
 import br.com.fiap.fase4pedido.features.domain.exception.exception.dto.SimpleError;
@@ -27,6 +28,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ProdutoNaoEncontradoException.class)
     public ResponseEntity<SimpleError> handleProdutoNaoEncontradoException(ProdutoNaoEncontradoException ex) {
+        return ResponseEntity.status(NOT_FOUND).body(new SimpleError(ex.getMessage(), NOT_FOUND.toString()));
+    }
+    @ExceptionHandler(EstoqueInsuficienteException.class)
+    public ResponseEntity<SimpleError> handleEstoqueInsuficienteException(EstoqueInsuficienteException ex) {
         return ResponseEntity.status(NOT_FOUND).body(new SimpleError(ex.getMessage(), NOT_FOUND.toString()));
     }
 
