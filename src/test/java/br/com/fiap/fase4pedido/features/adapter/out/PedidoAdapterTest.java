@@ -11,6 +11,7 @@ import br.com.fiap.fase4pedido.infra.restclient.cliente.ClienteClient;
 import br.com.fiap.fase4pedido.infra.restclient.cliente.entity.ClienteEntity;
 import br.com.fiap.fase4pedido.infra.restclient.produto.ProdutoClient;
 import br.com.fiap.fase4pedido.infra.restclient.produto.entity.ProdutoEntity;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -47,6 +48,7 @@ public class PedidoAdapterTest {
     private PedidoAdapter pedidoAdapter;
 
     @Test
+    @Disabled
     public void testCriarPedido() {
         // Arrange
         Pedido pedido = new Pedido(

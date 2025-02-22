@@ -32,4 +32,8 @@ public class PedidoUseCase {
     public Pedido obterPedidoPorId(String id) {
         return service.obterPedidoPorId(id);
     }
+
+    public void excluirPedido(String id) {
+        service.excluirPedido(id);
+    }
 }

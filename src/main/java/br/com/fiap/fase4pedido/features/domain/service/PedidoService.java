@@ -31,14 +31,16 @@ public class PedidoService {
     }
 
     public Pedido pagarPedido(String id) {
-        Pedido pedido = obterPedidoPorId(id);
-        pedido.setStatus(Status.PAGO);
-        return atualizarPedido(pedido);
+        return adapter.pagarPedido(id);
     }
 
     public Pedido cancelarPedido(String id) {
         Pedido pedido = obterPedidoPorId(id);
         pedido.setStatus(Status.CANCELADO);
         return atualizarPedido(pedido);
+    }
+
+    public void excluirPedido(String id) {
+        adapter.excluirPedido(id);
     }
 }

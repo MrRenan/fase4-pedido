@@ -21,31 +21,32 @@ public class PedidoController implements PedidoApi {
     private final PedidoUseCase useCase;
 
     @Override
-    @PostMapping
     public PedidoResponse criarPedido(@RequestBody PedidoRequest pedidoRequest) {
         Pedido pedido = useCase.criarPedido(mapper.paraPedido(pedidoRequest));
         return mapper.paraPedidoResponse(pedido);
     }
 
     @Override
-    @GetMapping
     public List<PedidoResponse> obterPedidos() {
         List<Pedido> pedidos = useCase.obterPedidos();
         return pedidos.stream().map(mapper::paraPedidoResponse).collect(Collectors.toList());
     }
 
     @Override
-    @PutMapping("/{id}/pagar")
     public PedidoResponse pagarPedido(@PathVariable String id) {
         Pedido pedido = useCase.pagarPedido(id);
         return mapper.paraPedidoResponse(pedido);
     }
 
     @Override
-    @PutMapping("/{id}/cancelar")
     public PedidoResponse cancelarPedido(@PathVariable String id) {
         Pedido pedido = useCase.cancelarPedido(id);
         return mapper.paraPedidoResponse(pedido);
+    }
+
+    @Override
+    public void excluirPedido(String id) {
+        useCase.excluirPedido(id);
     }
 
     @Override

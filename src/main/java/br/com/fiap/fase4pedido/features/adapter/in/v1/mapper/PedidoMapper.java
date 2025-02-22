@@ -13,7 +13,8 @@ import org.springframework.stereotype.Component;
         value = Component.class,
         elements = @AnnotateWith.Element(strings = "featuresAdapterInMapperPedidoMapperImpl")
 )
-public interface PedidoMapper {
+public
+interface PedidoMapper {
     PedidoResponse paraPedidoResponse(Pedido pedido);
 
     @Mapping(source = "clienteId", target = "cliente.id")

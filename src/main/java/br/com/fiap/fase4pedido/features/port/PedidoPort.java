@@ -10,7 +10,11 @@ public interface PedidoPort {
 
     List<Pedido> obterPedidos();
 
-    Pedido obterPedidoPorId(String id); // Adicionado
+    Pedido obterPedidoPorId(String id);
 
-    Pedido atualizarPedido(Pedido pedido); // Adicionado
+    Pedido atualizarPedido(Pedido pedido);
+
+    Pedido pagarPedido(String id);
+
+    void excluirPedido(String id);
 }

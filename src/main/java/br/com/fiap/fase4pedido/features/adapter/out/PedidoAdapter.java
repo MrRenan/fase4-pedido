@@ -11,6 +11,7 @@ import br.com.fiap.fase4pedido.features.domain.exception.exception.ProdutoNaoEnc
 import br.com.fiap.fase4pedido.features.port.PedidoPort;
 import br.com.fiap.fase4pedido.infra.mongodb.document.PedidoDocument;
 import br.com.fiap.fase4pedido.infra.mongodb.repository.PedidoRepository;
+import br.com.fiap.fase4pedido.infra.rabbitmq.PedidoPublisher;
 import br.com.fiap.fase4pedido.infra.restclient.cliente.ClienteClient;
 import br.com.fiap.fase4pedido.infra.restclient.cliente.entity.ClienteEntity;
 import br.com.fiap.fase4pedido.infra.restclient.produto.ProdutoClient;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static br.com.fiap.fase4pedido.features.domain.entity.Status.CRIADO;
+import static br.com.fiap.fase4pedido.features.domain.entity.Status.PAGO;
 import static java.time.LocalDate.now;
 
 @Component
@@ -35,6 +37,7 @@ public class PedidoAdapter implements PedidoPort {
     private final ProdutoClient produtoClient;
     private final PedidoRepository pedidoRepository;
     private final PedidoMapper mapper;
+    private final PedidoPublisher pedidoPublisher;
 
     @Override
     public Pedido criarPedido(Pedido pedido) {
@@ -45,7 +48,12 @@ public class PedidoAdapter implements PedidoPort {
                 .map(this::obterProduto)
                 .map(mapper::paraProduto).toList();
 
-        Pedido novoPedido = new Pedido("123", cliente, produtoList, now(), CRIADO, calcularTotal(produtoList));
+        Pedido novoPedido = new Pedido();
+        novoPedido.setCliente(cliente);
+        novoPedido.setProdutos(produtoList);
+        novoPedido.setDataCriacao(now());
+        novoPedido.setStatus(CRIADO);
+        novoPedido.setTotal(calcularTotal(produtoList));
 
         List<ProdutoEstoque> produtoEstoqueList = produtoList.stream()
                 .map(produto -> new ProdutoEstoque(produto.getId(), produto.getQuantidade()))
@@ -81,6 +89,21 @@ public class PedidoAdapter implements PedidoPort {
         PedidoDocument pedidoDocument = mapper.paraPedidoDocument(pedido);
         pedidoDocument = pedidoRepository.save(pedidoDocument);
         return mapper.paraPedido(pedidoDocument);
+    }
+
+    @Override
+    public Pedido pagarPedido(String id) {
+        Pedido pedido = obterPedidoPorId(id);
+        pedido.setStatus(PAGO);
+        PedidoDocument pedidoDocument = pedidoRepository.save(mapper.paraPedidoDocument(pedido));
+        pedidoPublisher.enviarPedidoPago(pedidoDocument.id());
+        return mapper.paraPedido(pedidoDocument);
+    }
+
+    @Override
+    public void excluirPedido(String id) {
+        Pedido pedido = obterPedidoPorId(id);
+        pedidoRepository.delete(mapper.paraPedidoDocument(pedido));
     }
 
     private BigDecimal calcularTotal(List<Produto> produtoList) {

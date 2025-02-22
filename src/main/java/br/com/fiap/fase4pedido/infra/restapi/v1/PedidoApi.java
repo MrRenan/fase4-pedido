@@ -6,8 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @RequestMapping("/v1/pedido")
 public interface PedidoApi {
@@ -27,6 +26,10 @@ public interface PedidoApi {
     @PutMapping("/{id}/cancelar")
     @ResponseStatus(OK)
     PedidoResponse cancelarPedido(@PathVariable String id);
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(NO_CONTENT)
+    void excluirPedido(@PathVariable String id);
 
     @GetMapping("/{id}")
     @ResponseStatus(OK)
