@@ -9,6 +9,7 @@ public record PedidoRequest(
         String clienteId,
         List<ProdutoRequest> produtos
 ) {
+    @Builder
     public record ProdutoRequest (
             String id,
             int quantidade
